@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Clientes - Sistema de Gestão{% endblock %}
+
+{% block content %}
+    <h1>Clientes</h1>
+    <!-- Formulário para adicionar um novo cliente -->
+    <form method="POST" action="/clientes">
+        <div class="mb-3">
+            <label for="nome" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="nome" name="nome" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">E-mail</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="telefone" class="form-label">Telefone</label>
+            <input type="text" class="form-control" id="telefone" name="telefone" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Adicionar Cliente</button>
+    </form>
+
+    <!-- Lista de clientes -->
+    <h2 class="mt-5">Lista de Clientes</h2>
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Telefone</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.id }}</td>
+                    <td>{{ cliente.nome }}</td>
+                    <td>{{ cliente.email }}</td>
+                    <td>{{ cliente.telefone }}</td>
+                    <td>
+                        <a href="/clientes/editar/{{ cliente.id }}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="/clientes/excluir/{{ cliente.id }}" class="btn btn-danger btn-sm">Excluir</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Nenhum cliente encontrado.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
