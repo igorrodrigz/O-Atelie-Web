@@ -1,0 +1,6 @@
+[
+  {
+    "type": "sqlite",
+    "path": "d:\\PycharmProjects\\OAtelierWeb\\database.db"
+  }
+]

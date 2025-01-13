@@ -1,27 +1,18 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Estoque</title>
+    <title>Estoque</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .container {
-            margin-top: 20px;
-        }
-        .form-container {
-            margin-bottom: 30px;
-        }
-        footer {
-            margin-top: 40px;
-            padding: 20px;
-            background-color: #f8f9fa;
-            text-align: center;
-        }
-    </style>
 </head>
 <body>
-    <!-- Navbar -->
+    <header class="bg-primary text-white py-3">
+        <div class="container">
+            <h1 class="h3">Estoque - OAtelier</h1>
+        </div>
+    </header>
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Sistema de Controle</a>
@@ -31,10 +22,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/estoque">Estoque</a>
+                        <a class="nav-link" href="/estoque">Estoque</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/ferramentas">Ferramentas</a>
+                        <a class="nav-link active" href="/ferramentas">Ferramentas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/servicos">Serviços</a>
@@ -47,61 +38,36 @@
         </div>
     </nav>
 
-    <!-- Conteúdo principal -->
-    <div class="container">
-        <h2>Controle de Estoque</h2>
-
-        <!-- Formulário para adicionar novo item ao estoque -->
-        <div class="form-container">
-            <form action="/estoque" method="POST">
-                <div class="form-group">
-                    <label for="nome_item">Nome do Item</label>
-                    <input type="text" class="form-control" id="nome_item" name="nome_item" required>
-                </div>
-                <div class="form-group">
-                    <label for="quantidade">Quantidade</label>
-                    <input type="number" class="form-control" id="quantidade" name="quantidade" required>
-                </div>
-                <div class="form-group">
-                    <label for="descricao">Descrição</label>
-                    <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Adicionar Item</button>
-            </form>
-        </div>
-
-        <!-- Tabela para exibir itens do estoque -->
-        <h3>Itens Cadastrados no Estoque</h3>
-        <table class="table table-bordered">
+    <main class="container my-5">
+        <h2>Lista de Estoque</h2>
+        <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Nome do Item</th>
-                    <th scope="col">Quantidade</th>
-                    <th scope="col">Descrição</th>
+                    <th>ID</th>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Tipo de Movimentação</th>
+                    <th>Data</th>
                 </tr>
             </thead>
             <tbody>
                 {% for item in estoque %}
                 <tr>
-                    <td>{{ item.nome_item }}</td>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.produto }}</td>
                     <td>{{ item.quantidade }}</td>
-                    <td>{{ item.descricao }}</td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="3" class="text-center">Nenhum item cadastrado.</td>
+                    <td>{{ item.tipo_movimentacao }}</td>
+                    <td>{{ item.data }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-    </div>
+        <a href="/estoque/add" class="btn btn-primary">Adicionar Item</a>
+        <a href="/" class="btn btn-secondary">Voltar</a>
+    </main>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 Sistema de Controle | Todos os direitos reservados.</p>
+    <footer class="bg-dark text-white text-center py-3">
+        &copy; 2025 OAtelier. Todos os direitos reservados.
     </footer>
-
-    <!-- Script Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
