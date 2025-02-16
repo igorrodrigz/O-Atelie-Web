@@ -3,39 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adicionar Estoque</title>
+    <title>Editar Estoque</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
 </head>
 <body>
     <header class="bg-primary text-white py-3">
         <div class="container">
-            <h1 class="h3">Adicionar Estoque - OAtelier</h1>
+            <h1 class="h3">Editar Estoque - OAtelier</h1>
         </div>
     </header>
 
     <main class="container my-5">
-        <h2>Cadastro de Estoque</h2>
-        <form action="{{ url_for('add_estoque') }}" method="POST" style="display: inline;">
+        <h2>Editar Estoque</h2>
+        <form action="{{ url_for('edit_estoque', id=item.id) }}" method="POST" display="inline">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="mb-3">
                 <label for="produto" class="form-label">Produto</label>
-                <input type="text" class="form-control" id="produto" name="produto" required>
+                <input type="text" class="form-control" id="produto" name="produto" value="{{ item.produto }}" required>
             </div>
             <div class="mb-3">
                 <label for="quantidade" class="form-label">Quantidade</label>
-                <input type="number" class="form-control" id="quantidade" name="quantidade" required>
+                <input type="number" class="form-control" id="quantidade" name="quantidade" value="{{ item.quantidade }}" required>
             </div>
             <div class="mb-3">
                 <label for="tipo_movimentacao" class="form-label">Tipo de Movimentação</label>
                 <select class="form-control" id="tipo_movimentacao" name="tipo_movimentacao">
-                    <option value="entrada">Entrada</option>
-                    <option value="saida">Saída</option>
+                    <option value="entrada" {% if item.tipo_movimentacao == 'entrada' %}selected{% endif %}>Entrada</option>
+                    <option value="saida" {% if item.tipo_movimentacao == 'saida' %}selected{% endif %}>Saída</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="data" class="form-label">Data</label>
-                <input type="date" class="form-control" id="data" name="data" required>
+                <input type="date" class="form-control" id="data" name="data" value="{{ item.data }}" required>
             </div>
             <button type="submit" class="btn btn-primary">Salvar</button>
             <a href="/estoque" class="btn btn-secondary">Cancelar</a>

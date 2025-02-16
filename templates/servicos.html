@@ -4,15 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Serviços</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
+    <!-- Header -->
     <header class="bg-primary text-white py-3">
         <div class="container">
-            <h1 class="h3">Clientes - OAtelier</h1>
+            <h1 class="h3">Serviços - OAtelier</h1>
         </div>
     </header>
+
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Sistema de Controle</a>
@@ -38,36 +41,87 @@
         </div>
     </nav>
 
+    <!-- Main Content -->
     <main class="container my-5">
         <h2>Lista de Serviços</h2>
+
+        <!-- Filter Form -->
+        <form method="get" action="{{ url_for('lista_servicos') }}" class="mb-3" display="inline;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="row">
+                <div class="col-md-3">
+                    <input type="text" name="id" class="form-control" placeholder="ID do Serviço">
+                </div>
+                <div class="col-md-3">
+                    <input type="text" name="nome" class="form-control" placeholder="Nome do Projeto">
+                </div>
+                <div class="col-md-3">
+                    <input type="text" name="cliente" class="form-control" placeholder="Nome do Cliente">
+                </div>
+                <div class="col-md-3">
+                    <select name="status" class="form-control">
+                        <option value="">Todos os Status</option>
+                        <option value="Entrada">Entrada</option>
+                        <option value="Em andamento">Em andamento</option>
+                        <option value="Lixa">Lixa</option>
+                        <option value="Marcenaria">Marcenaria</option>
+                        <option value="Pintura">Pintura</option>
+                        <option value="Terceirizado">Terceirizado</option>
+                        <option value="Vistoria">Vistoria</option>
+                        <option value="Entregue">Entregue</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mt-3 mt-md-0">
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Add Service Button -->
+        <a href="{{ url_for('add_servico') }}" class="btn btn-primary mb-3">Adicionar Serviço</a>
+
+        <!-- Services Table -->
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Nome</th>
-                    <th>Descrição</th>
-                    <th>Preço</th>
+                    <th>Nome do Projeto</th>
+                    <th>Cliente</th>
+                    <th>Data de Entrada</th>
+                    <th>Data Prazo</th>
+                    <th>Status</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
                 {% for servico in servicos %}
                 <tr>
                     <td>{{ servico.id }}</td>
-                    <td>{{ servico.nome }}</td>
-                    <td>{{ servico.descricao }}</td>
-                    <td>{{ servico.preco }}</td>
+                    <td>{{ servico.nome_projeto }}</td>
+                    <td>{{ servico.nome_cliente }}</td>
+                    <td>{{ servico.data_entrada }}</td>
+                    <td>{{ servico.data_prazo }}</td>
+                    <td>{{ servico.status }}</td>
+                    <td>
+                        <a href="{{ url_for('edit_servico', id=servico.id) }}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{{ url_for('view_servico', id=servico.id) }}" class="btn btn-info btn-sm">Ver</a>
+                        <form action="{{ url_for('delete_servico', id=servico.id) }}" method="post" style="display:inline;">
+                            {{ csrf_token() }}
+                            <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <button class="btn btn-primary" onclick="window.location.href='/add_servico'">Adicionar Serviço</button>
-        <button class="btn btn-primary" onclick="window.location.href='/edit_servico'">Atualizar Serviço</button>
-        <button class="btn btn-primary" onclick="window.location.href='/delete_servico'">Deletar Serviço</button>
-        <button class="btn btn-primary" onclick="window.location.href='/index'">Voltar</button>
+
+        <!-- Back Button -->
+        <a href="/" class="btn btn-secondary">Voltar</a>
     </main>
 
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    </script>
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3">
+        &copy; 2025 OAtelier. Todos os direitos reservados.
+    </footer>
 </body>
 </html>

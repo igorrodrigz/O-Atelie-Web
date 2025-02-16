@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Serviço</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <header class="bg-primary text-white py-3">
+        <div class="container">
+            <h1 class="h3">Detalhes do Serviço</h1>
+        </div>
+    </header>
+    <main class="container my-5">
+        <h2>{{ servico.nome_projeto }}</h2>
+        <p><strong>ID:</strong> {{ servico.id }}</p>
+        <p><strong>Cliente:</strong> {{ servico.nome_cliente }}</p>
+        <p><strong>Data de Entrada:</strong> {{ servico.data_entrada }}</p>
+        <p><strong>Data Prazo:</strong> {{ servico.data_prazo }}</p>
+        <p><strong>Status:</strong> {{ servico.status }}</p>
+        <p><strong>Observações:</strong> {{ servico.detalhes }}</p>
+        <p><strong>Material Adicional:</strong> {{ servico.material_adicional }}</p>
+        <p><strong>Valor:</strong> {{ servico.valor }}</p>
+        <p><strong>Quem Recebeu:</strong> {{ servico.quem_recebeu }}</p>
+        <p><strong>Aprovação:</strong> {{ servico.aprovacao }} </p>
+        <p><strong>Data Entregue:</strong> {{ servico.data_entregue }}</p>
+        <p><strong>Quem Retirou:</strong> {{ servico.quem_retirou }}</p>
+        <a href="{{ url_for('edit_servico', id=servico.id) }}" class="btn btn-warning">Editar</a>
+        <form action="{{ url_for('delete_servico', id=servico.id) }}" method="post" style="display:inline;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-danger">Excluir</button>
+        </form>
+        <a href="{{ url_for('lista_servicos') }}" class="btn btn-secondary">Voltar</a>
+    </main>
+    <footer class="bg-dark text-white text-center py-3">
+        &copy; 2025 OAtelier. Todos os direitos reservados.
+    </footer>
+</body>
+</html>
