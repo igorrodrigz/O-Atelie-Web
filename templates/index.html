@@ -1,30 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OAtelier</title>
+    <title>OAtelier - Software de Gestão de Recursos Empresariais</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-    <header class="bg-primary text-white py-3">
+
+    <!-- Header -->
+    <header class="bg-primary text-white py-5">
         <div class="container">
-            <h1 class="h3">OAtelier</h1>
+            <h1 class="display-4">OAtelier</h1>
+            <p class="lead">Sua solução completa para gestão de recursos empresariais</p>
+            <a href="#contato" class="btn btn-light btn-lg">Solicite uma Demonstração</a>
         </div>
     </header>
 
-    <main class="container my-5">
-        <h2>Bem-vindo ao OAtelier</h2>
-        <p>Gerencie clientes, estoque e ferramentas com facilidade!</p>
-        <a href="/clientes" class="btn btn-primary">Ver Clientes</a>
-        <a href="/estoque" class="btn btn-primary">Ver Estoque</a>
-        <a href="/ferramentas" class="btn btn-primary">Ver Ferramentas</a>
-        <a href="/servicos" class="btn btn-primary">Ver Serviços</a>
-    </main>
+    <!-- Seção sobre o produto -->
+    <section id="sobre" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2 class="display-5">O que é o OAtelier?</h2>
+                    <p>OAtelier é um software de gestão de recursos empresariais que facilita a organização, o monitoramento e a análise de seus recursos em tempo real. Desenvolvido para ser intuitivo e eficiente, o OAtelier ajuda sua empresa a otimizar processos e aumentar a produtividade.</p>
+                </div>
+                <div class="col-lg-6">
+                    <img src="https://via.placeholder.com/500" alt="Imagem do Software" class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <footer class="bg-dark text-white text-center py-3">
-        &copy; 2025 OAtelier. Todos os direitos reservados.
-    </footer>
-</body>
-</html>
+    <!-- Seção de Recursos -->
+    <section id="recursos" class="bg-light py-5">
+        <div class="container">
+            <h2 class="text-center display-5 mb-4">Principais Recursos</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>Gestão de Inventário</h4>
+                    <p>Controle completo de estoque, com relatórios em tempo real e alertas automáticos de reposição.</p>
+                </div>
+                <div class="col-md-4">
+                    <h4>Gestão Financeira</h4>
+                    <p>Faça o controle de fluxos financeiros, faturamento e relatórios de desempenho de forma fácil e eficaz.</p>
+                </div>
+                <div class="col-md-4">
+                    <h4>Relatórios Personalizados</h4>
+                    <p>Crie relatórios personalizados para análise detalhada dos seus dados e tomar decisões mais assertivas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Testemunhos -->
+    <section id="testemunhos" class="py-5">
+        <div class="container">
+            <h2 class="text-center display-5 mb-4">O que dizem nossos clientes</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <blockquote class="blockquote">
+                        <p class="mb-0">"O OAtelier transformou a maneira como nossa empresa gerencia os recursos. É rápido, fácil de usar e essencial para nosso crescimento."</p>
+                        <footer class="blockquote-footer">João Silva, CEO da XYZ Corp.</footer>
+                    </blockquote>
+                </div>
+                <div class="col-md-6">
+                    <blockquote class="blockquote">
+                        <p class="mb-0">"Nunca foi tão fácil monitorar todos os aspectos do nosso inventário e finanças em um único sistema!"</p>
+                        <footer class="blockquote-footer">Maria Oliveira, Gerente de Operações da ABC Ltda.</footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Contato -->
+    <section id="contato" class="bg-primary text-white py-5">
+        <div class="container">
+            <h2 class="text-center display-5 mb-4">Entre em contato</h2>
+            <form action="#" method="POST">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="nome">Nome</label>
+                        <input type="text" class="form-control" id="nome" name="nome" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="email">E-mail</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="mensagem">Mensagem</label>
+                    <textarea class="form-control" id="mensagem" name="mensagem" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-light btn-lg">Enviar Mensagem

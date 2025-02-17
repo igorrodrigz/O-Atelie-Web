@@ -9,9 +9,8 @@
 <body>
     <div class="container mt-5">
         <h2 class="text-center">Login Administrativo</h2>
-        <form action="/login" method="POST" class="mt-4">
-            {{ csrf_token() }}
-            {{ form.hidden_tag() }}
+        <form action="/login" method="POST" class="mt-4" style="max-width: 400px; margin: 0 auto;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="mb-3">
                 <label for="username" class="form-label">Usuário</label>
                 <input type="text" class="form-control" id="username" name="username" required>

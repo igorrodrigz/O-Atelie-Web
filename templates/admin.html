@@ -1,84 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Administrativo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <header class="bg-primary text-white py-3">
-        <div class="container">
-            <h1 class="h3">Painel Administrativo - OAtelier</h1>
-        </div>
-    </header>
+{% extends "base.html" %}
 
-    <main class="container my-5">
-        <h2>Gerenciamento</h2>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Clientes</h5>
-                        <p class="card-text">Gerenciar clientes cadastrados.</p>
-                        <a href="/admin/clientes" class="btn btn-primary">Acessar</a>
-                    </div>
-                </div>
-            </div>
+{% block title %}Painel Administrativo{% endblock %}
 
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Estoque</h5>
-                        <p class="card-text">Gerenciar produtos em estoque.</p>
-                        <a href="/admin/estoque" class="btn btn-primary">Acessar</a>
-                    </div>
-                </div>
-            </div>
+{% block content %}
 
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Serviços</h5>
-                        <p class="card-text">Gerenciar serviços oferecidos.</p>
-                        <a href="/admin/servicos" class="btn btn-primary">Acessar</a>
-                    </div>
+<header class="bg-primary text-white py-3">
+    <div class="container">
+        <h1 class="h3">Painel Administrativo</h1>
+    </div>
+</header>
+
+<main class="container my-5">
+    <h2>Gerenciamento</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Clientes</h5>
+                    <p class="card-text">Gerenciar clientes cadastrados.</p>
+                    <a href="/clientes" class="btn btn-primary">Acessar</a>
                 </div>
             </div>
         </div>
-        
-        <h2>Estatísticas</h2>
-        <div class="row text-center">
-            <div class="col-md-4">
-                <div class="card bg-info text-white">
-                    <div class="card-body">
-                        <h3>{{ total_clientes }}</h3>
-                        <p>Clientes Cadastrados</p>
-                    </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Estoque</h5>
+                    <p class="card-text">Gerenciar produtos em estoque.</p>
+                    <a href="/estoque" class="btn btn-primary">Acessar</a>
                 </div>
             </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Serviços</h5>
+                    <p class="card-text">Gerenciar serviços oferecidos.</p>
+                    <a href="/servicos" class="btn btn-primary">Acessar</a>
+                </div>
+            </div>
+        </div>
+    </div>
     
-            <div class="col-md-4">
-                <div class="card bg-warning text-white">
-                    <div class="card-body">
-                        <h3>{{ total_estoque }}</h3>
-                        <p>Itens no Estoque</p>
-                    </div>
-                </div>
-            </div>
-    
-            <div class="col-md-4">
-                <div class="card bg-success text-white">
-                    <div class="card-body">
-                        <h3>{{ total_servicos }}</h3>
-                        <p>Serviços Oferecidos</p>
-                    </div>
+    <h2>Estatísticas</h2>
+    <div class="row text-center">
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h3>{{ total_clientes }}</h3>
+                    <p>Clientes Cadastrados</p>
                 </div>
             </div>
         </div>
-    </main>
-    <footer class="bg-dark text-white text-center py-3">
-        &copy; 2025 OAtelier. Todos os direitos reservados.
-    </footer>
-</body>
-</html>
+
+        <div class="col-md-4">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h3>{{ total_estoque }}</h3>
+                    <p>Itens no Estoque</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h3>{{ total_servicos }}</h3>
+                    <p>Serviços em Andamento</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

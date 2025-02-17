@@ -56,7 +56,7 @@ def index():
 
 # 📌 Rota principal do painel
 @app.route('/admin')
-@login_required
+#@login_required
 def admin_dashboard():
     try:
         conn = get_db_connection()
@@ -65,15 +65,18 @@ def admin_dashboard():
         cursor.execute('SELECT COUNT(*) AS total_clientes FROM cliente')
         total_clientes = cursor.fetchone()['total_clientes']
 
-        cursor.execute('SELECT COUNT(*) AS total_servicos FROM servico')
+        cursor.execute('SELECT COUNT(*) AS total_servicos FROM servico WHERE status != "Entregue"')
         total_servicos = cursor.fetchone()['total_servicos']
 
         cursor.execute('SELECT COUNT(*) AS total_ferramentas FROM ferramenta')
         total_ferramentas = cursor.fetchone()['total_ferramentas']
 
+        cursor.execute('SELECT SUM(quantidade) AS total_estoque FROM estoque')
+        total_estoque = cursor.fetchone()['total_estoque']
+
         conn.close()
 
-        return render_template('admin.html', total_clientes=total_clientes, total_servicos=total_servicos, total_ferramentas=total_ferramentas)
+        return render_template('admin.html', total_clientes=total_clientes, total_servicos=total_servicos, total_ferramentas=total_ferramentas, total_estoque=total_estoque)
     except Exception as e:
         flash(f"Erro ao carregar o painel: {e}", "danger")
         return redirect(url_for('index'))

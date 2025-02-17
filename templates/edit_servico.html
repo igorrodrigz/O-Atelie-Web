@@ -1,108 +1,76 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Serviço</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Sistema de Controle</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/estoque">Estoque</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/ferramentas">Ferramentas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/servicos">Serviços</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/clientes">Clientes</a>
-                    </li>
-                </ul>
-            </div>
+{% extends "base.html" %}
+
+{% block title %}Editar Serviço{% endblock %}
+
+{% block content %}
+<main class="container my-5">
+    <h2>Editar Serviço</h2>
+    <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="mb-3">
+            <label for="nome_projeto" class="form-label">Nome do Projeto</label>
+            <input type="text" class="form-control" id="nome_projeto" name="nome_projeto" value="{{ servico.nome_projeto }}" required>
         </div>
-    </nav>
-
-    <main class="container my-5">
-        <h2>Editar Serviço</h2>
-        <form method="post">
-            <div class="mb-3">
-                <label for="nome_projeto" class="form-label">Nome do Projeto</label>
-                <input type="text" class="form-control" id="nome_projeto" name="nome_projeto" value="{{ servico.nome_projeto }}" required>
-            </div>
-            <div class="mb-3">
-                <label for="cliente_id" class="form-label">Cliente</label>
-                <select class="form-control" id="cliente_id" name="cliente_id" required>
-                    {% for cliente in clientes %}
-                    <option value="{{ cliente.id }}" {% if cliente.id == servico.cliente_id %}selected{% endif %}>{{ cliente.nome }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="data_entrada" class="form-label">Data de Entrada</label>
-                <input type="date" class="form-control" id="data_entrada" name="data_entrada" value="{{ servico.data_entrada }}" required>
-            </div>
-            <div class="mb-3">
-                <label for="data_prazo" class="form-label">Data Prazo</label>
-                <input type="date" class="form-control" id="data_prazo" name="data_prazo" value="{{ servico.data_prazo }}" required>
-            </div>
-            <div class="mb-3">
-                <label for="status" class="form-label">Status</label>
-                <select class="form-control" id="status" name="status" required>
-                    <option value="Entrada" {% if servico.status == 'Entrada' %}selected{% endif %}>Entrada</option>
-                    <option value="Em andamento" {% if servico.status == 'Em andamento' %}selected{% endif %}>Em andamento</option>
-                    <option value="Lixa" {% if servico.status == 'Lixa' %}selected{% endif %}>Lixa</option>
-                    <option value="Marcenaria" {% if servico.status == 'Marcenaria' %}selected{% endif %}>Marcenaria</option>
-                    <option value="Pintura" {% if servico.status == 'Pintura' %}selected{% endif %}>Pintura</option>
-                    <option value="Terceirizado" {% if servico.status == 'Terceirizado' %}selected{% endif %}>Terceirizado</option>
-                    <option value="Vistoria" {% if servico.status == 'Vistoria' %}selected{% endif %}>Vistoria</option>
-                    <option value="Entregue" {% if servico.status == 'Entregue' %}selected{% endif %}>Entregue</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="detalhes" class="form-label">Detalhes</label>
-                <textarea class="form-control" id="detalhes" name="detalhes" required>{{ servico.detalhes }}</textarea>
-            </div>
-            <div class="mb-3">
-                <label for="material_adicional" class="form-label">Material Adicional</label>
-                <textarea class="form-control" id="material_adicional" name="material_adicional" required>{{ servico.material_adicional }}</textarea>
-            </div>
-            <div class="mb-3">
-                <label for="valor" class="form-label">Valor</label>
-                <input type="number" class="form-control" id="valor" name="valor" value="{{ servico.valor }}" required>
-            </div>
-            <div class="mb-3">
-                <label for="quem_recebeu" class="form-label">Quem Recebeu</label>
-                <input type="text" class="form-control" id="quem_recebeu" name="quem_recebeu" value="{{ servico.quem_recebeu }}" required>
-            </div>
-            <div class="mb-3">
-                <label for="aprovacao" class="form-label">Aprovação</label>
-                <input type="text" class="form-control" id="aprovacao" name="aprovacao" value="{{ servico.aprovacao }}" required>
-            </div>
-            <div class="mb-3">
-                <label for="data_entregue" class="form-label">Data de Entrega</label>
-                <input type="date" class="form-control" id="data_entregue" name="data_entregue" value="{{ servico.data_entregue }}">
-            </div>
-            <div class="mb-3">
-                <label for="quem_retirou" class="form-label">Quem Retirou</label>
-                <input type="text" class="form-control" id="quem_retirou" name="quem_retirou" value="{{ servico.quem_retirou }}">
-            </div>
-            <button type="submit" class="btn btn-primary">Salvar</button>
-            <button type="reset" class="btn btn-secondary">Limpar</button>
-            <button type="button" class="btn btn-danger" onclick="window.location.href='/servicos'">Cancelar</button>
-        </form>
-    </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+        <div class="mb-3">
+            <label for="cliente_id" class="form-label">Cliente</label>
+            <select class="form-control" id="cliente_id" name="cliente_id" required>
+                {% for cliente in clientes %}
+                <option value="{{ cliente.id }}" {% if cliente.id == servico.cliente_id %}selected{% endif %}>{{ cliente.nome }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="data_entrada" class="form-label">Data de Entrada</label>
+            <input type="date" class="form-control" id="data_entrada" name="data_entrada" value="{{ servico.data_entrada }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="data_prazo" class="form-label">Data Prazo</label>
+            <input type="date" class="form-control" id="data_prazo" name="data_prazo" value="{{ servico.data_prazo }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-control" id="status" name="status" required>
+                <option value="Entrada" {% if servico.status == 'Entrada' %}selected{% endif %}>Entrada</option>
+                <option value="Em andamento" {% if servico.status == 'Em andamento' %}selected{% endif %}>Em andamento</option>
+                <option value="Lixa" {% if servico.status == 'Lixa' %}selected{% endif %}>Lixa</option>
+                <option value="Marcenaria" {% if servico.status == 'Marcenaria' %}selected{% endif %}>Marcenaria</option>
+                <option value="Pintura" {% if servico.status == 'Pintura' %}selected{% endif %}>Pintura</option>
+                <option value="Terceirizado" {% if servico.status == 'Terceirizado' %}selected{% endif %}>Terceirizado</option>
+                <option value="Vistoria" {% if servico.status == 'Vistoria' %}selected{% endif %}>Vistoria</option>
+                <option value="Entregue" {% if servico.status == 'Entregue' %}selected{% endif %}>Entregue</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="detalhes" class="form-label">Detalhes</label>
+            <textarea class="form-control" id="detalhes" name="detalhes" required>{{ servico.detalhes }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="material_adicional" class="form-label">Material Adicional</label>
+            <textarea class="form-control" id="material_adicional" name="material_adicional" required>{{ servico.material_adicional }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="valor" class="form-label">Valor</label>
+            <input type="number" class="form-control" id="valor" name="valor" value="{{ servico.valor }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="quem_recebeu" class="form-label">Quem Recebeu</label>
+            <input type="text" class="form-control" id="quem_recebeu" name="quem_recebeu" value="{{ servico.quem_recebeu }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="aprovacao" class="form-label">Aprovação</label>
+            <input type="text" class="form-control" id="aprovacao" name="aprovacao" value="{{ servico.aprovacao }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="data_entregue" class="form-label">Data de Entrega</label>
+            <input type="date" class="form-control" id="data_entregue" name="data_entregue" value="{{ servico.data_entregue }}">
+        </div>
+        <div class="mb-3">
+            <label for="quem_retirou" class="form-label">Quem Retirou</label>
+            <input type="text" class="form-control" id="quem_retirou" name="quem_retirou" value="{{ servico.quem_retirou }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <button type="reset" class="btn btn-secondary">Limpar</button>
+        <button type="button" class="btn btn-danger" onclick="window.location.href='/servicos'">Cancelar</button>
+    </form>
+</main>
+{% endblock %}
