@@ -73,6 +73,22 @@
             </div>
         </div>
     </div>
+<div class="mt-5">
+    <h2>Cadastro de Novo Usuário</h2>
+    <form action="/admin/add_user" method="POST" class="mt-4" style="max-width: 400px;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="mb-3">
+            <label for="username" class="form-label">Usuário</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Senha</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
+    </form>
+</div>
+
 </main>
 
 {% endblock %}

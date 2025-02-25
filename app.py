@@ -2,15 +2,17 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import login_required, LoginManager, login_user, logout_user, current_user
 from init_db import get_db_connection
 from flask_wtf.csrf import CSRFProtect
+from auth import auth, login_manager, User, create_admin_user
 from models import User  # Assuming you have a User model defined in models.py
 from forms import ClienteForm  # Ensure ClienteForm is imported
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'abra_cadabra'
+app.config['SESSION_PERMANET'] = False
+app.config['SESSION_TYPE'] = 'filesystem'
 csrf = CSRFProtect(app)
 
-# Initialize login manager
-login_manager = LoginManager()
+# Inicializar o Login-Manager do Auth.py
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
@@ -21,26 +23,43 @@ def load_user(user_id):
     cursor.execute('SELECT * FROM users WHERE id = %s', (user_id,))
     user = cursor.fetchone()
     conn.close()
+
     if user:
-        return User(user['id'], user['username'], user['password'])
+        return User(user['id'], user['username'], user['password_hash'])
     return None
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    print("Entrou em login app.py")
     if request.method == 'POST':
+        print("Entrou em POST app.py")
         username = request.form['username']
+        print("Pegou o username")
         password = request.form['password']
+        print("Pegou a senha")
+
         conn = get_db_connection()
+        print("Conexão com o banco de dados estabelecida")
         cursor = conn.cursor(dictionary=True)
+        print("Cursor criado")
         cursor.execute('SELECT * FROM users WHERE username = %s', (username,))
+        print("Executou a query")
         user = cursor.fetchone()
+        print("Pegou o usuário")
         conn.close()
-        if user and User.check_password(user['password'], password):
-            user_obj = User(user['id'], user['username'], user['password'])
+        print("Fechou a conexão")
+
+        if user and User(user['id'], user['username'], user['password_hash']).check_password(password):
+            print("Usuário autenticado")
+            user_obj = User(user['id'], user['username'], user['password_hash'])  # Corrigido para 'password_hash'
+            print("Objeto de usuário criado")
             login_user(user_obj)
-            return redirect(url_for('admin_dashboard'))
-        else:
-            flash('Invalid username or password', 'danger')
+            print("Usuário autenticado: {current_user.is_authenticated} redirecionando...")  # Depuração
+
+            return redirect(url_for('admin_dashboard'))  
+
+        flash('Invalid username or password', 'danger')
+
     return render_template('login.html')
 
 @app.route('/logout')
@@ -56,7 +75,7 @@ def index():
 
 # 📌 Rota principal do painel
 @app.route('/admin')
-#@login_required
+@login_required
 def admin_dashboard():
     try:
         conn = get_db_connection()
@@ -84,6 +103,7 @@ def admin_dashboard():
 
 # 📌 Rotas para Clientes
 @app.route('/clientes')
+@login_required
 def lista_clientes():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -93,6 +113,7 @@ def lista_clientes():
     return render_template('clientes.html', clientes=clientes)
 
 @app.route('/clientes/add', methods=['GET', 'POST'])
+@login_required
 def add_cliente():
     form = ClienteForm()
     if form.validate_on_submit():
@@ -121,6 +142,7 @@ def add_cliente():
     return render_template('add_cliente.html', form=form)
 
 @app.route('/clientes/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
 def edit_cliente(id):
     form = ClienteForm()
     conn = get_db_connection()
@@ -154,6 +176,7 @@ def edit_cliente(id):
     return render_template('edit_cliente.html', cliente=cliente, form=form)
 
 @app.route('/clientes/view/<int:id>')
+@login_required
 def view_cliente(id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -170,6 +193,7 @@ def view_cliente(id):
     return render_template('view_cliente.html', cliente=cliente, servicos=servicos)
 
 @app.route('/clientes/delete/<int:id>', methods=['POST'])
+@login_required
 def delete_cliente(id):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -180,6 +204,7 @@ def delete_cliente(id):
 
 # 📌 Rotas para Estoque
 @app.route('/estoque')
+@login_required
 def lista_estoque():
     produto = request.args.get('produto')
     tipo_movimentacao = request.args.get('tipo_movimentacao')
@@ -206,6 +231,7 @@ def lista_estoque():
     return render_template('estoque.html', estoque=estoque)
 
 @app.route('/estoque/add', methods=['GET', 'POST'])
+@login_required
 def add_estoque():
     if request.method == 'POST':
         produto = request.form['produto']
@@ -226,6 +252,7 @@ def add_estoque():
     return render_template('add_estoque.html')
 
 @app.route('/estoque/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
 def edit_estoque(id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -251,6 +278,7 @@ def edit_estoque(id):
     return render_template('edit_estoque.html', item=item)
 
 @app.route('/estoque/delete/<int:id>', methods=['POST'])
+@login_required
 def delete_estoque(id):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -262,6 +290,7 @@ def delete_estoque(id):
 
 # 📌 Rotas para Ferramentas
 @app.route('/ferramentas')
+@login_required
 def lista_ferramentas():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -271,6 +300,7 @@ def lista_ferramentas():
     return render_template('ferramentas.html', ferramentas=ferramentas)
 
 @app.route('/ferramentas/add', methods=['GET', 'POST'])
+@login_required
 def add_ferramenta():
     if request.method == 'POST':
         nome = request.form['nome']
@@ -290,6 +320,7 @@ def add_ferramenta():
     return render_template('add_ferramenta.html')
 
 @app.route('/ferramentas/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
 def edit_ferramenta(id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -314,6 +345,7 @@ def edit_ferramenta(id):
     return render_template('edit_ferramenta.html', ferramenta=ferramenta)
 
 @app.route('/ferramentas/delete/<int:id>', methods=['POST'])
+@login_required
 def delete_ferramenta(id):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -325,6 +357,7 @@ def delete_ferramenta(id):
 
 # 📌 Rotas para Serviços
 @app.route('/servicos')
+@login_required
 def lista_servicos():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -338,6 +371,7 @@ def lista_servicos():
     return render_template('servicos.html', servicos=servicos)
 
 @app.route('/servicos/add', methods=['GET', 'POST'])
+@login_required
 def add_servico():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -374,6 +408,7 @@ def add_servico():
     return render_template('add_servico.html', clientes=clientes, cliente_id=cliente_id)
 
 @app.route('/servicos/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
 def edit_servico(id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -408,6 +443,7 @@ def edit_servico(id):
     return render_template('edit_servico.html', servico=servico, clientes=clientes)
 
 @app.route('/servicos/view/<int:id>')
+@login_required
 def view_servico(id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -422,6 +458,7 @@ def view_servico(id):
     return render_template('view_servico.html', servico=servico)
 
 @app.route('/servicos/delete/<int:id>', methods=['POST'])
+@login_required
 def delete_servico(id):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -429,6 +466,37 @@ def delete_servico(id):
     conn.commit()
     conn.close()
     return redirect(url_for('lista_servicos'))
+
+@app.route('/admin/add_user', methods=['POST'])
+@login_required
+def add_user():
+    # Obtém o nome de usuário e a senha do formulário
+    username = request.form['username']
+    password = request.form['password']
+    # Gera o hash da senha
+    hashed_password = User.hash_password(password)
+
+    try:
+        # Estabelece conexão com o banco de dados
+        conn = get_db_connection()
+        print("Conexão com o banco de dados estabelecida")
+        cursor = conn.cursor()
+        print("Cursor criado")
+        # Executa a inserção do novo usuário no banco de dados
+        cursor.execute('INSERT INTO users (username, password_hash) VALUES (%s, %s)', (username, hashed_password))
+        print("Executou a query de inserção")
+        conn.commit()
+        print("Commit realizado")
+        conn.close()
+        print("Conexão com o banco de dados fechada")
+        flash('Usuário cadastrado com sucesso!', 'success')
+    except Exception as e:
+        # Em caso de erro, exibe uma mensagem de erro
+        print(f"Erro ao cadastrar usuário: {e}")
+        flash(f'Erro ao cadastrar usuário: {e}', 'danger')
+
+    # Redireciona para o painel de administração
+    return redirect(url_for('admin_dashboard'))
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
