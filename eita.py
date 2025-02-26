@@ -45,7 +45,7 @@ def create_tables():
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        # Criando a tabela de usuários (com password_hash)
+        # Criando a tabela de usuários (com email e password_hash)
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS users (
                 id INT AUTO_INCREMENT PRIMARY KEY,

@@ -29,7 +29,33 @@
             </div>
             <button type="submit" class="btn btn-primary">Salvar</button>
             <a href="/estoque" class="btn btn-secondary">Cancelar</a>
+            <a href="{{ url_for('entrada_estoque', id=item.id) }}" class="btn btn-success">Entrada</a>
+            <a href="{{ url_for('baixa_estoque', id=item.id) }}" class="btn btn-danger">Baixa</a>
         </form>
+    </main>
+
+    <main class="container my-5">
+        <h2>Histórico de Movimentações</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Quantidade</th>
+                    <th>Tipo de Movimentação</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for historico in item.historico %}
+                <tr>
+                    <td>{{ historico.id }}</td>
+                    <td>{{ historico.quantidade }}</td>
+                    <td>{{ historico.tipo_movimentacao }}</td>
+                    <td>{{ historico.data }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </main>
 
 {% endblock %}
