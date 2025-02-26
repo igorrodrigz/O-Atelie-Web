@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory
 from flask_login import login_required, LoginManager, login_user, logout_user, current_user
 from init_db import get_db_connection
 from flask_wtf.csrf import CSRFProtect
@@ -61,6 +61,10 @@ def login():
         flash('Invalid username or password', 'danger')
 
     return render_template('login.html')
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'icon.png')
 
 @app.route('/logout')
 @login_required
