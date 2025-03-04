@@ -62,10 +62,6 @@ def login():
 
     return render_template('login.html')
 
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'), 'icon.png')
-
 @app.route('/logout')
 @login_required
 def logout():
